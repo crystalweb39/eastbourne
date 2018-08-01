@@ -1,0 +1,170 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_modify adminmedia %}
+
+  {% block breadcrumbs %}
+    <div id="breadcrumbs">
+      <a href="../../../">
+        {% trans "Home" %}
+      </a>
+       &rsaquo; 
+       <a href="../../">
+         {{ app_label|capfirst }}
+      </a>
+      &rsaquo; 
+      <a href="../">Orders</a>
+	  &rsaquo; 
+	   <a href=".">Full Order Infos</a>
+    </div>
+  {% endblock %}
+
+{% block content %}<div id="content-main">
+<p><a href="../{{order.id}}/">Modify Order</a></p>
+<table border="1">
+<thead>
+<tr>
+	<th>Code</th>
+	<th>Product</th>
+	<th>Quantity</th>
+	<th>Price</th>
+	<th>Size</th>
+	<th>Style</th>
+</tr>
+</thead>
+{% for po in order.productorder_set.all %}
+<tr class="{% cycle 'row1' 'row2' %}">
+	<td>{{po.code}}</td>
+	<td><a href='/admin/shop/product/{{po.product.id}}/'>{{po.product.title}}</a></td>
+	<td>{{po.quantity}}</td>
+	<td>{{po.price}}</td>
+	<td>{{po.size}}</td>
+	<td>{{po.style}}</td>
+</tr>
+{% endfor %}
+</table>
+
+<table border="1">
+	<th> First Name/Last Name </th>
+	<th> GST Total </th>
+	<th> Shipping Total </th>
+	<th> Order Total </th>
+<tr class="{% cycle 'row1' 'row2' %}">
+	<td> {{order.user.first_name}}/{{order.user.last_name}} </td>
+	<td> {{order.tax_charged}} </td>
+	<td> {{order.shipping_charged}} </td>
+	<td> {{order.total_charged}} </td>
+</table>	
+
+{% if not profile %}
+	<p style="padding-left:30px">A user profile is not associated with this order.</p>
+{% else %}
+<h2>User Profile Information</h2>
+<table>
+	<tr><td colspan="2"><a href="../../../auth/user/{{order.user.id}}/">edit account</a>, <a href="../../../userprofile/profile/{{profile.id}}/">edit profile</a></td></tr>
+	<tr>
+		<td><b>Email</b></td>
+		<td>{{order.user.email}}</td>
+	</tr>
+		<td><b>Phone</b></td>
+		<td>{{order.getProfile.phone}}</td>
+	</tr>
+	<tr>
+		<td><b>Phone 2</b></td>
+		<td>{{order.getProfile.phone2}}</td>
+	</tr>
+	<tr>
+		<td><b>Fax</b></td>
+		<td>{{order.getProfile.fax}}</td>
+	</tr>
+	<tr>
+		<td><b>Company</b></td>
+		<td>{{order.getProfile.company}}</td>
+	</tr>
+	<tr>
+		<td><b>Trading As</b></td>
+		<td>{{order.getProfile.tradingas}}</td>
+	</tr>
+	<tr>
+		<td><b>ABN</b></td>
+		<td>{{order.getProfile.abn}}</td>
+	</tr>
+	<tr>
+		<td><b>Subscriber</b></td>
+		<td>{{order.getProfile.subscribe|yesno:"Yes,No"}}</td>
+	</tr>
+</table>
+<h2>Shipping Information</h2>
+<table>
+	<tr><td colspan="2"><a href="../../../userprofile/profile/{{profile.id}}/">edit shipping information</a></td></tr>
+	<tr>
+		<td><b>Address</b></td>
+		<td>{{order.getProfileShipping.address}}</td>
+	</tr>
+	<tr>
+		<td><b>Address2</b></td>
+		<td>{{order.getProfileShipping.address2}}</td>
+	</tr>
+	<tr>
+		<td><b>Address3</b></td>
+		<td>{{order.getProfileShipping.address3}}</td>
+	</tr>
+	<tr>
+		<td><b>Suburb</b></td>
+		<td>{{order.getProfileShipping.suburb}}</td>
+	</tr>
+	<tr>
+		<td><b>State</b></td>
+		<td>{{order.getProfileShipping.state}}</td>
+	</tr>
+	<tr>
+		<td><b>Postcode</b></td>
+		<td>{{order.getProfileShipping.postcode}}</td>
+	</tr>
+	<tr>
+		<td><b>Country</b></td>
+		<td>{{order.getProfileShipping.country}}</td>
+	</tr>
+	<tr>
+		<td><b>Phone</b></td>
+		<td>{{order.getProfileShipping.phone}}</td>
+	</tr>
+</table>
+{% if order.getProfileBilling %}
+<h2>Billing Information</h2>
+<table>
+	<tr><td colspan="2"><a href="../../../userprofile/profile/{{profile.id}}/">edit billing information</a></td></tr>
+	<tr>
+		<td><b>Address</b></td>
+		<td>{{order.getProfileBilling.address}}</td>
+	</tr>
+	<tr>
+		<td><b>Address2</b></td>
+		<td>{{order.getProfileBilling.address2}}</td>
+	</tr>
+	<tr>
+		<td><b>Address3</b></td>
+		<td>{{order.getProfileBilling.address3}}</td>
+	</tr>
+	<tr>
+		<td><b>Suburb</b></td>
+		<td>{{order.getProfileBilling.suburb}}</td>
+	</tr>
+	<tr>
+		<td><b>State</b></td>
+		<td>{{order.getProfileBilling.state}}</td>
+	</tr>
+	<tr>
+		<td><b>Postcode</b></td>
+		<td>{{order.getProfileBilling.postcode}}</td>
+	</tr>
+	<tr>
+		<td><b>Country</b></td>
+		<td>{{order.getProfileBilling.country}}</td>
+	</tr>
+	<tr>
+		<td><b>Phone</b></td>
+		<td>{{order.getProfileBilling.phone}}</td>
+	</tr>
+</table>
+{% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% load helpers %}
+{% if usr.is_active %}
+<div id="profilenavbox">
+<div>Welcome back {{usr.first_name}}!</div>
+<div class="dottedline"></div>
+<ul id="account_menu">
+	<li><a href="/wholesale/profile.html" class="nav1 haschildren {% if openpath|islast:"profile" %}aselected{% endif %}">My Account Profile</a>
+		<ul{% if not openpath|inlist:"profile" %} class="hidden"{% endif %}>
+			<li><a href="/wholesale/profile.html" class="nav2 {% if openpath|islast:"profile" %}aselected{% endif %}">Edit my profile info</a></li>
+			<li><a href="/wholesale/shipping.html" class="nav2">Edit my billing/shipping</a></li>
+		</ul>
+	</li>
+	<li><a href="/wholesale/orders.html">My Orders</a></li>
+	<li><a href="/wholesale/logout.html">Logout</a></li>
+</ul>
+</div>
+{% endif %}
+<div class="space-top"></div>
+<ul id="main_menu">
+	<li><a href="/" class="nav1 home {% if openpath|islast:"home" %}aselected{% endif %}">Home</a></li>
+	<li><a href="javascript:void(null);" class="nav1 haschildren {% if openpath|islast:"shop" %}aselected open{% endif %}">Shop the Product Range</a>
+		<ul {% if not openpath|inlist:"shop" %}class="hidden"{% endif %}>
+		{% for x in categories %}
+			{% if x.getChildren %}
+				<li><a href="javascript:void(null);" class="nav2 haschildren {% if openpath|islast:x.slug %}aselected{% endif %}">{{x.name}}</a>
+					<ul {% if not openpath|inlist:x.slug %}class="hidden"{% endif %}>
+					{% for xx in x.getChildren %}
+						<li><a href="{{xx.getUrl}}" class="nav3 {% if openpath|islast:xx.slug %}aselected{% endif %}">{{xx.name}}</a></li>
+					{% endfor %}
+					</ul>
+				</li>
+			{% else %}
+				<li><a href="{{x.getUrl}}" class="nav2 {% if openpath|islast:x.slug %}aselected{% endif %}">{{x.name}}</a></li>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</li>
+	<li><a href="/blog/" class="nav1 {% if openpath|islast:"blog" %}aselected{% endif %}">Blog "Amongst the Vines"</a></li>
+	<li><a href="/about.html" class="nav1 haschildren {% if openpath|islast:"about.html" %}aselected{% endif %}">About the brand</a></li>
+	<li><a href="javascript:void(null);" class="nav1 haschildren {% if openpath|inlist:"stockists" %}open{% endif%}">Stockists</a>
+		<ul{% if not openpath|inlist:"stockists" %} class="hidden"{% endif%}>
+			<li><a href="/stockists/australia.html" class="nav2 {% if openpath|islast:"australia" %}aselected{% endif %}">Australia</a></li>
+			{% comment %}<li><a href="/stockists/international.html" class="nav2 {% if openpath|islast:"international" %}aselected{% endif %}">International</a></li>  {% endcomment %} 
+		</ul>
+	</li>
+	
+	{% if not usr %}
+	<li><a href="/wholesale/" class="nav1">Trade Customers</a></li>
+	{% endif %}
+
+</ul>

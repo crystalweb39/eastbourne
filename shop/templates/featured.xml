@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<products>
+	{% for product in products %}
+	<product>
+		<title>{{product.title}}</title>
+		<code>{{product.code}}</code>
+		<price>{% if usr and usr.is_active %}{{product.wholesale_price}}{% else %}{{product.price}}{% endif %}</price>
+		<image>{% url shop.imageviews.imager path=product.getFeaturedImage.image,w=136,h=94 %}</image>
+	</product>
+	{% endfor %}
+</products>

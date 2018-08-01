@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Stockists{% endblock %}
+
+{% block "content" %}
+	<div id="col-right">
+		<img src="/media/assets/images/title_stockists.jpg" alt="Image" />
+		<div id="left-about">
+		{% for s in stockists %}
+			{% ifchanged %}<p class="title stockist-title">{{s.state}}</p>{% endifchanged %}
+			<p><span class="title-ora">{{s.suburb|upper}}</span><br />
+				{{s.name}}<br />
+				{{s.address}}<br />
+				{{s.suburb}} {{s.postcode}}<br />
+				{{s.phone}}</p>
+		{% endfor %}
+		</div>
+		{% include "footerwidget.html"%}
+	</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_modify adminmedia %}
+{% block breadcrumbs %}
+    <div id="breadcrumbs">
+      <a href="../../../">
+        {% trans "Home" %}
+      </a>
+       &rsaquo; 
+       <a href="../../">
+         Shop
+      </a>
+      &rsaquo; 
+      <a href="../">Product orders</a>
+	   &rsaquo; 
+	   <a href="."> Good view</a>
+    </div>
+  {% endblock %}
+
+
+{% block content %}
+<table id='result_list'>
+	<th> Product </th>
+	<th> Ordered Quantity </th>
+	<th> Category </th>
+	<th> Order </th>
+{%for x, y in productorder%}
+<tr class="{% cycle 'row1' 'row2' %}">
+	<td ><a href="../../product/{{x.id}}/"> {{x.title}} </a></td>
+	<td> {{y}} </td>
+	<td> {{x.category}} </td>
+	<td><a href= "order{{x.id}}/"> See orders have this product </a></td>
+
+	
+</tr>
+{%endfor%}
+
+{%endblock%}

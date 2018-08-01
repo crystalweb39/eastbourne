@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; {{document.title}}{% endblock %}
+{% block "content" %}
+	<div id="col-right">
+		<img src="/media/{{document.header}}" alt="{{document.title}}" />
+		<div id="left-about" class="indent">
+			{{document.content|safe}}
+		</div>
+{% include "footerwidget.html"%}
+	</div>
+{% endblock %}

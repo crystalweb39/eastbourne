@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block "fulltitle" %}Eastbourne Art{% endblock %}
+{% block "extrahead" %}
+<META NAME="ROBOTS" CONTENT="NOINDEX, FOLLOW">
+<script>
+<!--
+function showShipCalc(){
+	if(!$("#shippingCalculator").is(":hidden")){
+		$("#shippingcalculatelink").text("calculate");
+		$("#shippingCalculator").slideUp(500);
+	}else{
+		$("#shippingcalculatelink").text("cancel");
+		$("#shippingCalculator").slideDown(500);
+	}
+}
+function calculateShippingPrice(country, postcode, weight){
+	$("#shippingCalculateButton").attr("disabled", "disabled");
+	$('#shippingcalculationerror').fadeOut(500);
+	$.post("/shop/calculateshipping.json", { country: country, postcode: postcode, weight: weight},
+		function(data){
+			$("#shippingCalculateButton").removeAttr("disabled");
+			if (data["error"]){
+				$('#shippingcalculationerror').text("Error: "+data['error']);
+				$('#shippingcalculationerror').fadeIn(500);
+				$('#shippingCost').text("?")
+			}else{
+				$('#shippingCost').text(data["shippingprice"]);
+				$('#totalCost').text(data["totalprice"]);
+				$('#taxCost').text(data["tax"]);
+				$('#shippingcalculationerror').fadeOut(500);
+				$("#shippingCalculateButton").removeAttr("disabled");
+				$("#shippingCalculator").slideUp(500);
+				$("#shippingcalculatelink").text("re-calculate");
+			}
+		}, "json");
+}
+function shippingPriced(){
+	if ($('#shippingCost').text() == "?"){
+		alert("Please calculate the price for shipping before continuing");
+		return false;
+	}
+	return true;
+}
+// -->
+</script>
+<style>
+#shippingCalculator {
+	position: absolute;
+	border: 1px solid #333;
+	background-color: #fff;
+	padding: 5px;
+}
+</style>
+{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+
+			<img src="/media/assets/images/title_shoppingcart.jpg" alt="Shopping Cart" />
+<form method="post" action="">{% csrf_token %}
+<div class="text-block">
+  <p class="title-big-ora">Your order {{order.getOrderNumber}} details </p><br />
+
+
+<table width="670" cellpadding="0" cellspacing="0" class="table" >
+  <tr>
+    <td align="center" class="inner-top">Quantity</td>
+    <td class="inner-top">Product Name</td>
+    <td class="inner-top">Unit Price</td>
+    <td class="inner-top" width="150">Total Price</td>
+  </tr>
+{% if order.productorder_set.all%}
+{% for product in order.productorder_set.all %}
+  <tr>
+    <td align="center" class="inner"><input type="text" class="cartquantity" name="quantity{{product.id}}" value="{{product.quantity}}" size="2" /></td>
+    <td class="inner"><div>{{product.product.title}}</div><div class="product-code">{{product.code}}</div></td>
+    <td class="inner">AU${{product.getUnitPrice}}</td>
+    <td class="inner">AU${{product.getTotalPrice}}</td>
+  </tr>
+{% endfor %}
+  <tr>
+    <td class="inner">&nbsp;</td>
+    <td class="inner">&nbsp;</td>
+    <td align="right" class="inner">GST<br />
+      Freight &amp; Handling<br />
+      <strong>Order Total</strong></td>
+    <td class="inner"><div>AU$<span id="taxCost">{{taxcost}}</span></div>
+{% if usr and usr.is_active %}
+<div>pending*</div>
+{% else %}
+<div>AU$<span id="shippingCost">{{shippingcost}}</span> <a href="javascript:void(null)" id="shippingcalculatelink" onclick="showShipCalc()">calculate</a></div>
+{% endif %}
+      <div id="shippingCalculator" class="hidden">
+      <p><strong>Shipping Address</strong></p> 
+      <table>
+	      <tr>
+		      <td>Country:</td>
+		      <td><select name="country" id="country">
+		{% if shippingcountry %}
+			<option value="{{shippingcountry}}" selected="selected">{{shippingcountry}}</option>
+		{%else%}
+			<option value="AUSTRALIA" selected="selected">AUSTRALIA</option>
+		{% endif %}
+      {% for c in countries %}
+      	<option value="{{c.country}}">{{c.country}}</option>
+      {% endfor %}
+      </select></td>
+	      </tr>
+	      <tr>
+		      <td>Postcode/ZIP:</td>
+		      <td><input type="text" name="postcode" id="postcode" size="5" value="{{shippingpostcode}}" /></td>
+	      </tr>
+	      <tr>
+		      <td></td>
+		      <td><input class="button-add" name="button" type="button" id="shippingCalculateButton" value="Calculate Shipping" onclick="calculateShippingPrice($('#country').val(), $('#postcode').val(), {{order.getTotalWeight}})" /></td>
+	      </tr>
+      </table>
+      <div id="shippingcalculationerror" class="errormsg hidden"></div>
+      </div>
+      <div><strong>AU$<span id="totalCost">{{totalcost}}</span></strong></div></td>
+  </tr>
+{% else %}
+<tr>
+    <td align="center" class="inner" colspan="4">Currently you have no products in your shopping bag.</td>
+  </tr>
+{% endif %}
+</table>
+{% if usr and usr.is_active %}
+<div style='text-align:right;padding-right:20px;'>*We will review your order and email you with the freight cost</div>
+{% endif %}
+</div>
+<input type="hidden" name="products" value="{% for product in order.productorder_set.all %}{{product.id}} {%endfor%}" />
+	<div class="text-block-bottom">
+	{% if order.productorder_set.all%}
+	<input name="changequantity" type="submit" class="button-post" id="changequantity" value="Change Quantity" />
+	{% endif %}
+	<input name="continueshopping" type="submit" class="button-post" id="continueshopping" value="Continue Shopping" />
+	{% if order.productorder_set.all%}
+	<input name="completemyorder" type="submit" class="button-post" id="completemyorder" value="Complete My Order" onclick="return shippingPriced()" /> <br /> <br /> <br />
+
+	
+	
+	{% endif %}
+
+	</div>
+
+<br />
+<br />
+
+
+		  </form>
+		  </div>
+
+{% endblock %}

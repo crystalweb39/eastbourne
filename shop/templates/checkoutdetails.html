@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Shipping Details{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+<form method="POST" action="">{% csrf_token %}
+			<img src="/media/assets/images/title_shoppingcart.jpg" alt="Shipping Details" />
+{% if form.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your submission, please correct them below.</div>
+{% endif %}
+		  <div id="left-about-sml">
+		    <p><span class="title-big-ora">Billing Information</span><br />
+	        Please enter your billing information below.</p>
+		    <p>First name<span class="title-ora">*</span><br />
+		      {{ form.billfirstname }}{{ form.billfirstname.errors }}
+		    </p>
+		    <p>Last name<span class="title-ora">*</span><br />
+		      {{ form.billlastname}}{{ form.billlastname.errors }}
+		    </p>
+		    <p>Company<br />
+		      {{ form.billcompany  }}{{ form.billcompany.errors }}
+		    </p>
+		    <p>Address<span class="title-ora">*</span><br />
+		      {{ form.billaddress  }}{{ form.billaddress.errors }}
+		    </p>
+		    <p>Address 2<br />
+		      {{ form.billaddress2  }}{{ form.billaddress2.errors }}
+		    </p>
+		    <p>Address 3<br />
+		      {{ form.billaddress3  }}{{ form.billaddress3.errors }}
+		    </p>
+		    <p>Suburb<span class="title-ora">*</span><br />
+		      {{ form.billsuburb  }}{{ form.billsuburb.errors }}
+		    </p>
+		    <p>State/Province<span class="title-ora">*</span><br />
+		      {{ form.billstate  }}{{ form.billstate.errors }}
+		    </p>
+		    <p>Postcode/ZIP<span class="title-ora">*</span><br />
+		      {{ form.billpostcode  }}{{ form.billpostcode.errors }}
+		    </p>
+		    <p>Country<span class="title-ora">*</span><br />
+		      {{ form.billcountry  }}{{ form.billcountry.errors }}
+		    </p>
+		    <p>Phone<br />
+		      {{ form.billphone  }}{{ form.billphone.errors }}
+		    </p>
+		    <p>Email address<span class="title-ora">*</span><br />
+		      {{ form.billemail  }}{{ form.billemail.errors }}
+		    </p>
+		    <!-- p>&nbsp;</p -->
+		  </div>
+
+<div class="spacer">
+</div>
+
+		  <div id="left-about-sml">
+		    <p><span class="title-big-ora">Shipping Information</span><br />
+	        Please enter your shipping information below.</p>
+		    <p>First name<span class="title-ora">*</span><br />
+		      {{ form.shipfirstname  }}{{ form.shipfirstname.errors }}
+		    </p>
+		    <p>Last name<span class="title-ora">*</span><br />
+		      {{ form.shiplastname  }}{{ form.shiplastname.errors }}
+		    </p>
+		    <p>Company<br />
+		      {{ form.shipcompany  }}{{ form.shipcompany.errors }}
+		    </p>
+		    <p>Address<span class="title-ora">*</span><br />
+		      {{ form.shipaddress  }}{{ form.shipaddress.errors }}
+		    </p>
+		    <p>Address 2<br />
+		      {{ form.shipaddress2  }}{{ form.shipaddress2.errors }}
+		    </p>
+		    <p>Address 3<br />
+		      {{ form.shipaddress3  }}{{ form.shipaddress3.errors }}
+		    </p>
+		    <p>Suburb<span class="title-ora">*</span><br />
+		      {{ form.shipsuburb  }}
+		    </p>
+		    <p>State/Province<span class="title-ora">*</span><br />
+		      {{ form.shipstate  }}{{ form.shipstate.errors }}
+		    </p>
+		    <p>Postcode/ZIP<span class="title-ora">*</span><br />
+		      {{ form.shippostcode  }}{{ form.shippostcode.errors }}
+		    </p>
+		    <p>Country<span class="title-ora">*</span><br />
+				{{ form.shipcountry  }}{{ form.shipcountry.errors }}
+		    </p>
+		    <p>Phone<br />
+		      {{ form.shipphone  }}{{ form.shipphone.errors }}
+		    </p>
+		    <p>&nbsp;</p>
+		  </div>
+
+<div class="text-block-top">
+  <p>
+    {{ form.copydata  }}{{ form.copydata.errors }}
+    My billing and shipping information are the same
+    </p>
+    <p>&nbsp;</p>
+  <p>Would you like to receive our monthly newsletter to keep updated?</p>
+  <div class="subscriptionform">{{ form.subscribe  }}{{ form.subscribe.errors }}</div>
+  <p>&nbsp;</p>
+	<p>{{ form.agree  }} I agree with the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> {{ form.agree.errors }}</p>
+</div>
+{% if form.errors %}
+<script language="Javascript">
+<!--
+{% for error in form.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+//alert($('#id_{{error}}'));
+{% endfor %}
+// -->
+</script>
+{% endif %}
+
+<div class="text-block">
+  <p class="title-big-ora"><br />Order details</p><br />
+
+
+<table width="670" cellpadding="0" cellspacing="0" class="table" >
+  <tr>
+    <td align="center" class="inner-top">Quantity</td>
+    <td class="inner-top">Product Name</td>
+    <td class="inner-top">Unit Price</td>
+    <td class="inner-top">Total Price</td>
+  </tr>
+{% if order.productorder_set.all%}
+{% for product in order.productorder_set.all %}
+  <tr>
+    <td align="center" class="inner">{{product.quantity}}</td>
+    <td class="inner">{{product.product.title}} <span class="product-code">{{product.code}}</span></td>
+    <td class="inner">AU${{product.getUnitPrice}}</td>
+    <td class="inner">AU${{product.getTotalPrice}}</td>
+  </tr>
+{% endfor %}
+  <tr>
+    <td class="inner">&nbsp;</td>
+    <td class="inner">&nbsp;</td>
+    <td align="right" class="inner">GST<br />
+      Freight &amp; Handling<br />
+      <strong>Order Subtotal</strong></td>
+    <td class="inner"><div>AU$<span id="taxCost">{{taxcost}}</span></div>
+      <div>AU$<span id="shippingCost">{{shippingcost}}</span></div>
+      <div><strong>AU$<span id="totalCost">{{totalcost}}</span></strong></div></td>
+  </tr>
+{% else %}
+<tr>
+    <td align="center" class="inner" colspan="4">Currently you have no products in your shopping bag.</td>
+  </tr>
+{% endif %}
+</table>
+
+</div>
+
+			<div class="text-block-top">
+            <label>
+            <input name="editmyorder" type="submit" class="button-post-right" id="editmyorder" value="Edit my order" />
+            </label>
+			</div>
+			
+
+			<div class="text-block-bottom">
+            <input name="proceed" type="submit" class="button-post" id="proceed" value="Proceed to payment" />
+			</div>
+
+</form>
+		  </div>
+		  {{msg}}
+{% endblock %}

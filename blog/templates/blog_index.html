@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Blog{% if page%}{%endif%}{% endblock %}
+
+{% block "content" %}
+			<div id="col-right">
+
+			<div class="image-top">
+			<img src="/media/assets/images/title_blog.jpg" alt="Image" />
+			</div>
+
+			<div id="blog">
+{% for blogpost in blogposts %}
+			<div class="date">{{blogpost.publishdate|date:"d . m . y"}}</div>
+
+			<div class="title">
+			  <a href="{{blogpost.getURL}}">{{blogpost.title}}</a>
+            </div>
+			{{blogpost.content|truncatewords_html:100|safe}} <a href="{{blogpost.getURL}}">more</a>
+						<div class="comments">
+				<a href="{{blogpost.getURL}}#comments">Comments (<span class="text-green">{{blogpost.getCommentsCount}}</span>)</a>
+            </div>
+{% endfor %}
+
+		      <div id="blog-end">
+		      	{% if page.has_next %}
+				<div class="arrow-right"><a href="archive{{page.next_page_number}}.html">
+				  <div class="txt-wrap">
+				  <div class="space-above"></div>
+                  Older posts
+				    </div>
+			    <img src="/media/assets/images/arrow_right.gif" alt="Older posts" align="absmiddle" /></a>
+				</div>
+				{% endif %}
+				{% if page.has_previous %}
+				<div class="arrow-left">{% ifequal page.previous_page_number 1 %}<a href="./">{%else%}<a href="archive{{page.previous_page_number}}.html">{% endifequal %}
+	              <img src="/media/assets/images/arrow_left.gif" alt="Newer posts" align="absmiddle" />
+				  <div class="txt-wrap">
+				  <div class="space-above"></div>
+                  Newer posts
+				</div></a>
+				</div>
+				{% endif %}
+				</div>
+		</div>
+		<img src="/media/assets/images/img_blog_bottom.jpg" alt="Image" />
+{% include "footerwidget.html"%}
+		</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load shop_helpers %}
+{% block "title" %} &raquo; {{category.name}}{% endblock %}
+{% block "content" %}
+	<div id="col-right">
+		<img src="/media/{{category.image}}" alt="{{category.name}}" />
+		<div id="products-all">
+			<div class="page-select">
+{% include "pagination.html" %}
+					{%if category.parent%}
+				    <span class="orange-txt">{{category.parent.name}} </span><span class="black-txt">- {{category.name}}</span>
+				    {% else %}
+				    <span class="orange-txt">{{category.name}}</span>
+				    {% endif %}
+                    </div>
+                   
+            {% if products %}
+			{% for row in products %}
+			<div class="holder">
+				{% for x in row %}
+				{% if forloop.first %}{% else %}<div class="space-product"></div>{% endif %}
+				<div class="product">
+					<a href="#" onclick="showProduct('{{x.code}}');return false;">
+						<img src="{% url shop.imageviews.imager path=x.getFeaturedImage.image,w=209,h=142 %}" width="209" height="142" alt="Product" />
+						<span class="orange" title="{{x.title}}">{{x.title|slice:"0:37"}}</span><br />
+						<div class="product-description">{{x.description|slice:"0:80"}}...</div>
+						{% display_current_price x usr coupon template %}
+						
+						{% comment %}
+						{% if usr %}
+						{% if x.isDiscountedW %}
+						<strike>$AU {{x.getNormalTaxPriceW}} </strike><br/>
+						<strong class="discounted">AU {{x.getTaxPriceW}} </strong></a>
+						{% else %}
+						
+						<strong>$AU {{x.getTaxPriceW}}</strong></a>
+						{%endif%}
+						
+							
+								
+							
+					    {% else%}
+					    {% if x.isDiscounted %}
+					    <strike>$AU {{x.getNormalTaxPrice}} </strike><br/>
+						<strong class="discounted">AU {{x.getTaxPrice}} </strong></a>
+					    {% else %}
+					    <p>         </p>
+					    <p>         </p>
+					    <strong>$AU {{x.getTaxPrice}}</strong> </a>
+					    {% endif %}
+					    {% endif %}
+						{% endcomment %}
+					</a>
+				</div>
+				{% endfor %}
+				<div style="clear: both;"></div>
+		 	</div>
+		 	<div class="clear"></div>
+		 	{% endfor %}
+		 	{% else %}
+		 		<p>Currently there are no products in the {{category.name}} section.</p>
+		 	{% endif %}
+			  <div class="page-select">
+{% include "pagination.html" %}
+                    </div>
+		 	</div>
+		 	</div>
+{% endblock %}

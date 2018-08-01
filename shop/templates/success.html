@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Order Processed{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+			<img src="/media/assets/images/hdr_thanks.jpg" alt="Shipping Details" />
+		  <div id="left-about">
+		    <p><span class="title-big-ora">Thank you, your order has been processed</span></p>
+		    <p>{% if usr.is_authenticated %}
+	        Your order number is <b><a href="/wholesale/order{{orderid}}.html">#EB{{orderid}}</a></b>
+	        {% else %}
+	        Your order number is <b>#EB{{orderid}}</b>
+	        {% endif %}
+	        </p>
+	        <p>{{strings.shop_orderchanges}}</p>
+			
+			<p>  <b style="color:#e95d00;"> > </b> <a href="/">Go to the Homepage</a><br /><br />
+			 <b style="color:#e95d00;"> > </b> <a href="/blog/">Read our latest Blog post </a> <br /> <br />
+			</p>
+		  </div>
+	</div>
+{% endblock %}

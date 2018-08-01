@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Shipping Details{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+<form method="POST" action="">{% csrf_token %}
+			<img src="/media/assets/images/title_shoppingcart.jpg" alt="Shipping Details" />
+		  <div id="left-about-sml">
+		    <p><span class="title-big-ora">Billing Information</span></p>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">First name</div>
+			    <div class="confirmvalue">{{billing.first_name}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Last name</div>
+			    <div class="confirmvalue">{{billing.last_name}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Company</div>
+			    <div class="confirmvalue">{{billing.company}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Address</div>
+			    <div class="confirmvalue">{{billing.address}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Address 2</div>
+			    <div class="confirmvalue">{{billing.address2}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Address 3</div>
+			    <div class="confirmvalue">{{billing.address3}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Suburb</div>
+			    <div class="confirmvalue">{{billing.suburb}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">State/Province</div>
+			    <div class="confirmvalue">{{billing.state}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Postcode/ZIP</div>
+			    <div class="confirmvalue">{{billing.postcode}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Country</div>
+			    <div class="confirmvalue">{{billing.country}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Phone</div>
+			    <div class="confirmvalue">{{billing.phone}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Email address</div>
+			    <div class="confirmvalue">{{usr.email}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel confirmnewsletter">Receive monthly newsletter</div>
+			    <div class="confirmvalue">{{profile.subscribe|yesno:"Yes,No"}}</div>
+		    </div>
+		</div>
+<div class="spacer">
+</div>
+
+		  <div id="left-about-sml">
+		    <p><span class="title-big-ora">Shipping Information</span></p>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">First name</div>
+			    <div class="confirmvalue">{{shipping.first_name}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Last name</div>
+			    <div class="confirmvalue">{{shipping.last_name}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Company</div>
+			    <div class="confirmvalue">{{shipping.company}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Address</div>
+			    <div class="confirmvalue">{{shipping.address}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Address 2</div>
+			    <div class="confirmvalue">{{shipping.address2}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Address 3</div>
+			    <div class="confirmvalue">{{shipping.address3}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Suburb</div>
+			    <div class="confirmvalue">{{shipping.suburb}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">State/Province</div>
+			    <div class="confirmvalue">{{shipping.state}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Postcode/ZIP</div>
+			    <div class="confirmvalue">{{shipping.postcode}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Country</div>
+			    <div class="confirmvalue">{{shipping.country}}</div>
+		    </div>
+		    <div class="confirmrow">
+			    <div class="confirmlabel">Phone</div>
+			    <div class="confirmvalue">{{shipping.phone}}</div>
+		    </div>
+		  </div>
+
+<div class="text-block-top">
+    <label>
+    	<input name="editmydetails" type="submit" class="button-post-right" id="editmydetails" value="Edit my details" />
+    </label>
+</div>
+{% if form.errors %}
+<script language="Javascript">
+<!--
+{% for error in form.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+//alert($('#id_{{error}}'));
+{% endfor %}
+// -->
+</script>
+{% endif %}
+
+<div class="text-block">
+  <p class="title-big-ora"><br />Order details</p><br />
+
+
+<table width="670" cellpadding="0" cellspacing="0" class="table" >
+  <tr>
+    <td align="center" class="inner-top">Quantity</td>
+    <td class="inner-top">Product Name</td>
+    <td class="inner-top">Unit Price</td>
+    <td class="inner-top">Total Price</td>
+  </tr>
+{% if order.productorder_set.all%}
+{% for product in order.productorder_set.all %}
+  <tr>
+    <td align="center" class="inner">{{product.quantity}}</td>
+    <td class="inner">{{product.product.title}} <span class="product-code">{{product.code}}</span></td>
+    <td class="inner">AU${{product.price}}</td>
+    <td class="inner">AU${{product.getTotalPrice}}</td>
+  </tr>
+{% endfor %}
+  <tr>
+    <td class="inner">&nbsp;</td>
+    <td class="inner">&nbsp;</td>
+    <td align="right" class="inner">GST<br />
+      Freight &amp; Handling<br />
+      <strong>Order Subtotal</strong></td>
+    <td class="inner"><div>AU$<span id="taxCost">{{taxcost}}</span></div>
+      <div>AU$<span id="shippingCost">{{shippingcost}}</span></div>
+      <div><strong>AU$<span id="totalCost">{{totalcost}}</span></strong></div></td>
+  </tr>
+{% else %}
+<tr>
+    <td align="center" class="inner" colspan="4">Currently you have no products in your shopping bag.</td>
+  </tr>
+{% endif %}
+</table>
+
+</div>
+
+			<div class="text-block-top">
+            <label>
+            <input name="editmyorder" type="submit" class="button-post-right" id="editmyorder" value="Edit my order" />
+            </label>
+			</div>
+			
+
+			<div class="text-block-bottom">
+            <input name="proceed" type="submit" class="button-post" id="proceed" value="Proceed to payment" />
+			</div>
+
+</form>
+		  </div>
+{% endblock %}

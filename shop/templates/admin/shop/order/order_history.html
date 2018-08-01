@@ -1,0 +1,46 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_modify adminmedia %}
+
+  {% block breadcrumbs %}
+    <div id="breadcrumbs">
+      <a href="../../">
+        {% trans "Home" %}
+      </a>
+       &rsaquo; 
+       <a href="../../">
+         {{ app_label|capfirst }}
+      </a>
+      &rsaquo; 
+      <a href="../">Orders</a>
+    </div>
+  {% endblock %}
+
+{% block content %}<div id="content-main">
+<p><a href="/admin/userprofile/profile/{{profile.id}}/">View/Edit Profile</a>, <a href="/admin/auth/user/{{usr.id}}/">View/Edit User Account</a></p>
+<table border="1">
+<thead>
+<tr>
+	<th>Order #</th>
+	<th>Date Started</th>
+	<th>Date Updated</th>
+	<th>Status</th>
+	<th>Wholesale</th>
+	<th>Items</th>
+	<th>Weight</th>
+	<th>Total</th>
+</tr>
+</thead>
+{% for order in orders %}
+<tr class="{% cycle 'row1' 'row2' %}">
+	<td><a href="/admin/shop/order/order{{order.id}}/">{{order.getOrderNumber}}</a></td>
+	<td>{{order.started|date:"jS M Y, P"}}</td>
+	<td>{{order.updated|date:"jS M Y, P"}}</td>
+	<td>{{order.status}}</td>
+	<td>{{order.is_wholesale|yesno:"Yes,No"}}</td>
+	<td>{{order.getTotalItems}}</td>
+	<td>{{order.getTotalWeight}}</td>
+	<td>{{order.getTotalCharged}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

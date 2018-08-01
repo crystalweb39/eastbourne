@@ -1,0 +1,135 @@
+{% load shop_helpers %}
+<div id="middle">
+	<div id="left-panel">
+		{% with product.getFeaturedImage as img %}
+		<img id="productImage" src="{% url shop.imageviews.imager path=img.image,w=209,h=142 %}" alt="{{img.title}}" title="{{img.title}}" width="209" height="142" />
+		<div class="image-under">
+		    <a title="{{img.title}}" id="largerImageLink" href="{% url shop.imageviews.imager path=img.image,w=600,h=600,crop=0 %}" target="imgviewer" onclick="window.open('', 'imgviewer', 'width=600,height=600');" style="text-decoration:none;"><font color='#D46013'></>View larger image</font></a><br/><br/>
+		    {% for x in product.getImages %}<a href="javascript:void(null);" onclick="changeProductImage('{% url shop.imageviews.imager path=x.image,w=209,h=142 %}', '{% url shop.imageviews.imager path=x.image,w=600,h=600,crop=0 %}', '{{x.title|escapejs}}')"><img src="{% url shop.imageviews.imager path=x.image,w=63,h=42 %}" alt="{{x.title}}" title="{{x.title}}" width="63" height="42"/></a>{% endfor %}
+	    </div>
+	    {% endwith %}
+		{% with related|slice:"1" as rel %}
+		{% for x in rel %}
+		<div class="product-other">
+		    <strong>You might also like...</strong><br/>
+	        <a href="#" onclick="showProduct('{{x.code}}');return false;"><img src="{% url shop.imageviews.imager path=x.getFeaturedImage.image,w=136,h=94 %}" alt="{{x.title}}" width="136" height="94"/></a><br/>
+	        
+	        <span class="txt-ora"><a href="#" onclick="showProduct('{{x.code}}');return false;">{{x.title}}</a></span><br/>
+	        {% display_current_price x usr coupon price %}
+			{% comment %}
+			{% if usr %}
+	        AU${{x.getTaxPriceW}}
+	        {% else %}
+	        AU${{x.getTaxPrice}}
+	        {% endif %}
+			{% endcomment %}
+			</div>
+		{%endfor%}
+		{% endwith %}
+	</div>
+	<div id="right-panel">
+		<div class="right">
+	    	<a href="#" onclick="$('#box').fadeOut(300);return false;"><img src="/media/assets/images/img_x.jpg" alt="Close"></a>
+	    </div>
+		<div class="title-top">{{product.title}}</div>
+		<div class="txt-body">
+		{% display_current_price product usr coupon comboprice %}	
+		
+			
+		{% comment %}
+		{% if usr %}
+		{%if product.productsizeprice_set.all%}
+		
+		<div class="price">AU$<span id='price'>{{product.getFirstPriceW}}</span></div>
+		
+		
+		{% else%}
+		<div class="price">AU${{product.getTaxPriceW}} </div>
+		{%endif%}
+		{% else %}
+		 {%if product.productsizeprice_set.all%} 
+		
+		
+		<div class="price">AU$<span id='price'>{{product.getFirstPrice}}</span></div>
+		
+		{%else%}
+		<div class="price">AU${{product.getTaxPrice}} </div>
+		{%endif%}
+		{% endif %}
+		{% endcomment %}
+		
+		
+		    <div class="product-description" >
+		        {{product.description}}
+		    </div>
+	        <br/>
+	        {% if product.status.can_buy %}
+	        {% if product.productsizeprice_set.all %}
+	        <strong>Size:</strong><br/>
+			{% if usr%}
+	        <select name="size" id="size" class="field-dd-1" onchange="getPrice({{product.id}},$('#size').val(),'2','{{coupon}}')">
+	       	{% for s in product.productsizeprice_set.all %}
+			  {% if s.wholesale_price > 0 %}
+	          <option value="{{s.size.code}}" >{{s.size.name}}</option>
+			  {% endif %}
+	        {% endfor %}
+			
+	        {% else %}
+			<select name="size" id="size" class="field-dd-1" onchange="getPrice({{product.id}},$('#size').val(),'1','{{coupon}}')">
+			{% for s in product.productsizeprice_set.all %}
+			  {% if s.price > 0 %}
+	          <option value="{{s.size.code}}" >{{s.size.name}}</option>
+			  {% endif %}
+	        {% endfor %}
+			
+			{%endif%}
+	        
+	        </select>
+	        <br/>
+	        <br/>
+	        {% else %}
+	        <input type="hidden" name="size" id="size" value="" />
+	        {% endif %}
+	        {% if product.styles.all %}
+	        <strong>Style:</strong><br/>
+	        <select name="style" id="style" class="field-dd-1" >
+	        {% for s in product.styles.all %}
+	          <option value="{{s.code}}">{{s.name}}</option>
+	        {% endfor %}
+	        </select>
+	        <br/>
+	        <br/>
+	        {% else %}
+	        <input type="hidden" name="style" id="style" value="" />
+	        {% endif %}
+			<strong>Quantity:</strong><br/>
+	        <select id="quantity" name="quantity" class="field-dd-2">
+	        {% for x in quantities %}
+	          <option>{{x}}</option>
+	        {% endfor %}
+	        </select>
+			{% if usr.is_active %}
+				{% ifnotequal product.minimum_quantity_wholesale 1 %}
+		        <span class="note">(Minimum quantity {{product.minimum_quantity_wholesale}})</span>
+				{% endifnotequal %}
+			{% else %}
+				{% ifnotequal product.minimum_quantity 1 %}
+		        <span class="note">(Minimum quantity {{product.minimum_quantity}})</span>
+				{% endifnotequal %}
+			{% endif %}
+	        <br/>
+	        <br/>
+			<input type="hidden" name="id" value="{{product.id}}" />
+	        <input class="button-add" name="button" id="addButton" value="Add to shopping bag" type="button" onclick="addToCart({{product.id}}, $('#quantity').val(), $('#size').val(), $('#style').val())" />
+	        <br/>
+	        <br/>
+	        <div id="productaddstatus"></div>
+	        {% else %}
+	        <div class="outofstock">This product is currently out of stock</div>
+	        {% endif %}
+	        <br/>
+	        <br/>
+		</div>
+	</div>
+	<div style="clear: both;"></div>
+</div>

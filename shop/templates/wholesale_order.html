@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; {{order.formatNumber}} Order Details{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+			<img src="/media/assets/images/title_shoppingcart.jpg" alt="Shipping Details" />
+<div class="text-block">
+		    <p><span class="title-big-ora">{{order.formatNumber}} Order Details</span></p>
+
+<table width="670" cellpadding="0" cellspacing="0" class="table" >
+  <tr>
+    <td align="center" class="inner-top">Quantity</td>
+    <td class="inner-top">Product Name</td>
+    <td class="inner-top">Unit Price</td>
+    <td class="inner-top">Total Price</td>
+  </tr>
+{% if order.productorder_set.all%}
+{% for product in order.productorder_set.all %}
+  <tr>
+    <td align="center" class="inner">{{product.quantity}}</td>
+    <td class="inner"><div>{{product.product.title}}</div><div class="product-code">{{product.code}}</div></td>
+    <td class="inner">AU${{product.getUnitPrice}}</td>
+    <td class="inner">AU${{product.getTotalPrice}}</td>
+  </tr>
+{% endfor %}
+  <tr>
+    <td class="inner">&nbsp;</td>
+    <td class="inner">&nbsp;</td>
+    <td align="right" class="inner">GST<br />
+      Freight &amp; Handling<br />
+      <strong>Order Subtotal</strong></td>
+    <td class="inner">AU${{order.getTaxCharged}}<br />
+      {% if order.getShippingCharged == '0.00' %}pending{% else %}AU${{order.getShippingCharged}}{% endif %}<br />
+      <strong>AU${{order.getTotalCharged}}</strong></td>
+  </tr>
+{% else %}
+<tr>
+    <td align="center" class="inner" colspan="4">This order does not contain any products.</td>
+  </tr>
+{% endif %}
+</table>
+
+		  </div>
+	</div>
+{% endblock %}

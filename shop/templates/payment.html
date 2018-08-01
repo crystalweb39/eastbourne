@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Payment Details{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+<form method="POST" action="">{% csrf_token %}
+			<img src="/media/assets/images/title_shoppingcart.jpg" alt="Payment Details" />
+{% if form.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in with your payment details, please correct them below.</div>
+{{form.non_field_errors}}
+{% endif %}
+{% if message %}
+<div id="errorsexist" class="errormsg">{{message}} </div>
+{%endif%}
+<div style='float:right;margin-top:10%;margin-right:5%'><input type='image' src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" name='paypalcheckout' id='paypalcheckout' value='paypal' /> </div>
+		  <div id="left-about-sml">
+		  	
+		    <p><span class="title-big-ora">Payment Details</span><br />
+	        Please enter your payment details below.</p>
+	        {{ form.hash.errors }}
+			
+		    <p>Name on Card<span class="title-ora">*</span><br />
+		     
+			  {{form.name}} {{ form.name.errors }} 
+			 
+		    </p>
+			
+		    <p>Card Type<span class="title-ora">*</span><br />
+		      {{ form.type }}{{ form.type.errors }}
+			  
+		    </p>
+	
+			<p>Card number<span class="title-ora">*</span><br />
+		      {{ form.number  }}{{ form.number.errors }}
+		    </p>
+		    <p>CCV<span class="title-ora">*</span><br />
+		      {{ form.CVV  }}{{ form.CCV.errors }}
+		    </p>
+		    <p>Card expiry<span class="title-ora">*</span><br />
+		      {{ form.expiryMonth  }}
+		      {{ form.expiryYear  }}<br/>
+		      {{ form.expiryYear.errors }}
+		    </p>
+		  </div>
+<input type="hidden" name="amount" value="{{ totalcost }}" />
+<input type="hidden" name="hash" value="{{ hash }}" />
+
+<div class="text-block-top">
+<input name="proceed" type="submit" class="button-post" id="proceed" value="Submit payment" />
+
+
+</div>
+{% if form.errors %}
+<script language="Javascript">
+<!--
+{% for error in form.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+{% ifequal error "expiryYear"%}
+$('#id_expiryMonth').addClass('errorhighlight');
+{% endifequal%}
+{% endfor %}
+// -->
+</script>
+{% endif %}
+
+<div class="text-block">
+  <p class="title-big-ora"><br />Order details</p><br />
+
+
+<table width="670" cellpadding="0" cellspacing="0" class="table" >
+  <tr>
+    <td align="center" class="inner-top">Quantity</td>
+    <td class="inner-top">Product Name</td>
+    <td class="inner-top">Unit Price</td>
+    <td class="inner-top">Total Price</td>
+  </tr>
+{% if order.productorder_set.all%}
+{% for product in order.productorder_set.all %}
+  <tr>
+    <td align="center" class="inner">{{product.quantity}}</td>
+    <td class="inner">{{product.product.title}} <span class="product-code">{{product.code}}</span></td>
+    <td class="inner">AU${{product.getUnitPrice}}</td>
+    <td class="inner">AU${{product.getTotalPrice}}</td>
+  </tr>
+{% endfor %}
+  <tr>
+    <td class="inner">&nbsp;</td>
+    <td class="inner">&nbsp;</td>
+    <td align="right" class="inner">GST<br />
+      Freight &amp; Handling<br />
+      <strong>Order Subtotal</strong></td>
+    <td class="inner"><div>AU$<span id="taxCost">{{taxcost}}</span></div>
+      <div>AU$<span id="shippingCost">{{shippingcost}}</span></div>
+      <div><strong>AU$<span id="totalCost">{{totalcost}}</span></strong></div></td>
+  </tr>
+{% else %}
+<tr>
+    <td align="center" class="inner" colspan="4">Currently you have no products in your shopping bag.</td>
+  </tr>
+{% endif %}
+</table>
+
+</div>
+
+			<div class="text-block-top">
+            <label>
+            <input name="editmyorder" type="submit" class="button-post-right" id="editmyorder" value="Edit my order" />
+            </label>
+			
+			</div>
+			
+</form>
+		  </div>
+{% endblock %}

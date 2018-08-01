@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Edit Profile{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+
+			<img src="/media/assets/images/title_profile.jpg" alt="Image" />
+{% if contactform.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your submission, please correct them below.</div>
+{% endif %}
+{% if emailform.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your submission, please correct them below.</div>
+{% endif %}
+{% if passwordform.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your submission, please correct them below.</div>
+{% endif %}
+{% if addressform.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your submission, please correct them below.</div>
+{% endif %}
+<form method="post">{% csrf_token %}
+		  <div id="left-about">
+		    <p><span class="title-big-ora">Primary contact information</span><br />
+	        Please enter your billing information below.</p>
+		    <p>First name<span class="title-ora">*</span><br />
+		      {{contactform.firstname}}{{ contactform.firstname.errors }}
+		    </p>
+		    <p>Last name<span class="title-ora">*</span><br />
+		      {{contactform.lastname}}{{ contactform.lastname.errors }}
+		    </p>
+		    <p>Company<span class="title-ora">*</span><br />
+		      {{contactform.company}}{{ contactform.company.errors }}
+		    </p>
+		    <p>Trading as<br />
+		      {{contactform.tradingas}}{{ contactform.tradingas.errors }}
+		    </p>
+		    <p>ABN<span class="title-ora">*</span><br />
+		      {{contactform.abn}}{{ contactform.abn.errors }}
+		    </p>
+		    <p>Day phone<span class="title-ora">*</span><br />
+		      {{contactform.phone}}{{ contactform.phone.errors }}
+		    </p>
+		    <p>After hours phone<br />
+		      {{contactform.phone2}}{{ contactform.phone2.errors }}
+		    </p>
+		    <p>Fax number<span class="title-ora">*</span><br />
+		        {{contactform.fax}}{{ contactform.fax.errors }}
+	        </p>
+  <p>Would you like to receive our monthly newsletter to keep updated?</p>
+  <div class="subscriptionform">
+  {{ contactform.subscribe  }}{{ contactform.subscribe.errors }}
+	</div>
+	        <div class="line-dotted-button">
+                  <label><input name="contactupdate" type="submit" class="button-post" id="contactupdate" value="Update" /></label>
+			</div>
+	        
+	        
+		    <p><span class="title-big-ora">Change my email address</span><br />
+	        Please enter your new email address below.</p>
+	        
+		    <p>Current email address<span class="title-ora">*</span><br />
+		      {{emailform.current}}{{emailform.current.errors}}
+		    </p>
+		    <p>New email address<span class="title-ora">*</span><br />
+		      {{emailform.email}}{{emailform.email.errors}}
+		    </p>
+		    <p>Confirm email address<span class="title-ora">*</span><br />
+		      {{emailform.email2}}{{emailform.email2.errors}}
+		    </p>
+		    
+	        <div class="line-dotted-button">
+                  <label><input name="emailupdate" type="submit" class="button-post" id="emailupdate" value="Update" /></label>
+			</div>
+		    <p><span class="title-big-ora">Change my password</span><br />
+	        Please enter your new password below.</p>
+		    <p>Password<span class="title-ora">*</span><br />
+		      {{passwordform.password}}{{passwordform.password.errors}}
+		    </p>
+		    <p>Confirm password<span class="title-ora">*</span><br />
+		      {{passwordform.password2}}{{passwordform.password2.errors}}
+		    </p>
+	        <div class="line-dotted-button">
+                  <label><input name="passwordupdate" type="submit" class="button-post" id="passwordupdate" value="Update" /></label>
+			</div>
+		    <p>&nbsp; </p>
+		  </div>
+<script language="Javascript">
+<!--
+{% for error in contactform.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+{% endfor %}
+{% for error in emailform.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+{% endfor %}
+{% for error in passwordform.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+{% endfor %}
+{% for error in addressform.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+{% endfor %}
+// -->
+</script>
+</form>
+		  </div>
+{% endblock %}

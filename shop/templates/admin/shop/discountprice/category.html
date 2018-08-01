@@ -1,0 +1,111 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_modify adminmedia %}
+{% block extrahead %}
+<script type="text/javascript" src="../../../jsi18n/"></script>
+<script type="text/javascript" src="/media/adminmedia/js/core.js"></script>
+<script type="text/javascript" src="/media/adminmedia/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/media/adminmedia/js/jquery.min.js"></script>
+<script type="text/javascript" src="/media/adminmedia/js/jquery.init.js"></script>
+<script type="text/javascript" src="/media/adminmedia/js/actions.min.js"></script>
+<script type="text/javascript" src="/media/adminmedia/js/calendar.js"></script>
+<script type="text/javascript" src="/media/adminmedia/js/admin/DateTimeShortcuts.js"></script>
+
+
+
+
+{% endblock %}
+
+
+  {% block breadcrumbs %}
+    <div id="breadcrumbs">
+      <a href="../../../">
+        {% trans "Home" %}
+      </a>
+       &rsaquo; 
+       <a href="../../">
+         shop
+      </a>
+      &rsaquo; 
+      <a href="../">discount prices</a>
+	  &rsaquo; 
+	   <a href=".">category</a>
+    </div>
+  {% endblock %}
+
+  
+  {%block content%}
+  <div id='content' class='colM'>
+  	<h1>MANAGE DISCOUNT BY CATEGORY</h1>
+  <div id ='content-main'>
+  {% if errors %}
+    <p class="errornote">
+    {{errors}}
+    </p>
+	{% endif %}
+  <form method='POST' id='category_form' name='category'>
+  	<fieldset class="module aligned">
+  	<div class="form-row required">
+  		<div>
+  			<label class='required'><a href='../../category'></>Category: </a></label>
+			<select name='category'>
+				<option value selected="selected">---------------------</option>
+				{% for x in category%}
+				<option value={{x.id}}>{{x}}</option>
+				{%endfor%}
+			</select>
+		</div>
+	</div>
+	<div class="form-row required">
+		<div>
+			<label class='required'> Percentage off: </label>
+			<input type='text' name='off' value='0' id='id_off'>%
+			
+		</div>
+	</div>
+	<div class='form-row required'>
+		<div>
+			<label class='required'> Wholesale Percentage off: </label>
+			<input type='text' name='wholesale_off' value='0' id='id_wholesale_off'>%
+			
+		</div>
+	</div>
+	<div class="form-row required">
+            
+            
+                <div>
+                    
+                        <label class="required">Start:</label>
+                        
+                            <p class="datetime">Date: <input name="start_0" class="vDateField" type="text" id="id_start_0" size="10"><br>Time: <input name="start_1" class="vTimeField" type="text" id="id_start_1" size="8"></p>
+                        
+                    
+                    
+                </div>
+            
+        </div>
+		<div class="form-row required">
+            
+            
+                <div>
+                    
+                        <label class="required">End:</label>
+                        
+                            <p class="datetime">Date: <input name="end_0" class="vDateField" type="text" id="id_end_0" size="10"><br>Time: <input name="end_1" class="vTimeField" type="text" id="id_end_1" size="8"></p>
+                        
+                    
+                    
+                </div>
+            
+        </div>
+	
+	</fieldset>
+	<div class="submit-row">
+	<input type="submit" value="Save" class="default" name="_save">
+	
+
+	<input type="submit" value="Save and continue editing" name="_continue">	
+	</div>
+   </form>
+ </div>
+ </div>
+  {%endblock%}

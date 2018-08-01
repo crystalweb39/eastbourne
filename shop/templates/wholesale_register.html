@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Register for a Wholesale Account{% endblock %}
+{% block "extrahead"%}
+<style type="text/css">
+.errorhighlight {
+	float: left;
+}
+form ul {
+	padding: 3px;
+	margin: 3px;
+	padding-top: 0px;
+	margin-top: 0px;
+	list-style-type: none;
+}
+form ul li {
+	display: inline;
+}
+ul.errorlist {
+	float: left;
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	left: 10px;
+	top: -5px;
+	width: 150px;
+}
+ul.errorlist li {
+	display: inline;
+	padding: 0px;
+	margin: 0px;
+}
+p {
+	clear: both;
+}
+</style>
+{% endblock%}
+{% block "content" %}
+			<div id="col-right">
+
+			<img src="/media/assets/images/hdr_trade_register.jpg" alt="Register" />
+{% if form.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your submission, please correct them below.</div>
+{% endif %}
+<form method="post">{% csrf_token %}
+		  <div id="left-about">
+		  	<p>Please enter your primary contact information below</p>
+		    <p><span class="title-big-ora">Primary contact information</span></p>
+		    <p>First name<span class="title-ora">*</span><br />
+		      {{form.firstname}}{{ form.firstname.errors }}
+		    </p>
+		    <p>Last name<span class="title-ora">*</span><br />
+		      {{form.lastname}}{{ form.lastname.errors }}
+		    </p>
+		    <p>Email address<span class="title-ora">*</span><br />
+		      {{form.email}}{{form.email.errors}}
+		    </p>
+		    <p>Confirm email address<span class="title-ora">*</span><br />
+		      {{form.email2}}{{form.email2.errors}}
+		    </p>
+		    <p>Password<span class="title-ora">*</span><br />
+		      {{form.password}}{{form.password.errors}}
+		    </p>
+		    <p>Confirm password<span class="title-ora">*</span><br />
+		      {{form.password2}}{{form.password2.errors}}
+		    </p>
+		    <p>Day phone<span class="title-ora">*</span><br />
+		      {{form.phone}}{{ form.phone.errors }}
+		    </p>
+		    <p>After hours phone<br />
+		      {{form.phone2}}{{ form.phone2.errors }}
+		    </p>
+		    <p>Fax number<span class="title-ora">*</span><br />
+		        {{form.fax}}{{ form.fax.errors }}
+	        </p>
+	        <p><span class="title-big-ora">Your business information</span></p>
+		    <p>Registered business name<span class="title-ora">*</span><br />
+		      {{form.company}}{{ form.company.errors }}
+		    </p>
+		    <p>Trading as<br />
+		      {{form.tradingas}}{{ form.tradingas.errors }}
+		    </p>
+		    <p>ABN<span class="title-ora">*</span><br />
+		      {{form.abn}}{{ form.abn.errors }}
+		    </p>
+	        <p><span class="title-big-ora">Your business address</span></p>
+		    <p>Address<span class="title-ora">*</span><br />
+		      {{form.address}}{{ form.address.errors }}
+		    </p>
+		    <p>Address 2<br />
+		      {{form.address2}}{{ form.address2.errors }}
+		    </p>
+		    <p>Address 3<br />
+		      {{form.address3}}{{ form.address3.errors }}
+		    </p>
+		    <p>Suburb<span class="title-ora">*</span><br />
+		      {{form.suburb}}{{ form.suburb.errors }}
+		    </p>
+		    <p>State<span class="title-ora">*</span><br />
+		      {{form.state}}{{ form.state.errors }}
+		    </p>
+		    <p>Postcode/ZIP<span class="title-ora">*</span><br />
+		      {{form.postcode}}{{ form.postcode.errors }}
+		    </p>
+		    <p>Country<span class="title-ora">*</span><br />
+		      {{form.country}}{{ form.country.errors }}
+		    </p>
+  <p>Would you like to receive our monthly newsletter to keep updated?</p>
+  <div class="subscriptionform">
+  {{ form.subscribe  }}{{ form.subscribe.errors }}
+	</div>
+			<div class="line-dotted-button">
+                  <label>
+                  <input name="register" type="submit" class="button-post" id="register" value="Submit my details" />
+              </label>
+			</div>
+
+		    <p>&nbsp; </p>
+		  </div>
+{% if form.errors %}
+<script language="Javascript">
+<!--
+{% for error in form.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+//alert($('#id_{{error}}'));
+{% endfor %}
+// -->
+</script>
+{% endif %}
+</form>
+		  </div>
+{% endblock %}

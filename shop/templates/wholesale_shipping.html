@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Edit Profile{% endblock %}
+{% block "extrahead"%}
+<style type="text/css">
+.errorhighlight {
+	float: left;
+}
+form ul {
+	padding: 3px;
+	margin: 3px;
+	padding-top: 0px;
+	margin-top: 0px;
+	list-style-type: none;
+}
+form ul li {
+	display: inline;
+}
+ul.errorlist {
+	float: left;
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	left: 220px;
+	top: -20px;
+	width: 150px;
+}
+ul.errorlist li {
+	display: inline;
+	padding: 0px;
+	margin: 0px;
+}
+p {
+	clear: both;
+}
+</style>
+{% endblock%}
+{% block "content" %}
+			<div id="col-right">
+
+			<img src="/media/assets/images/hdr_editbilling.jpg" alt="Image" />
+{% if addressform.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your submission, please correct them below.</div>
+{% endif %}
+{% if updated %}
+<div class="notice">Your details have been updated</div>
+{% endif %}
+<form method="POST" action="">{% csrf_token %}
+		  <div id="left-about-sml">
+		    <p><span class="title-big-ora">Billing Information</span></p>
+		    <p>First name<span class="title-ora">*</span><br />
+		      {{addressform.billfirstname}}{{ addressform.billfirstname.errors }}
+		    </p>
+		    <p>Last name<span class="title-ora">*</span><br />
+		      {{addressform.billlastname}}{{ addressform.billlastname.errors }}
+		    </p>
+		    <p>Company<br />
+		      {{addressform.billcompany}}{{ addressform.billcompany.errors }}
+		    </p>
+		    <p>Address<span class="title-ora">*</span><br />
+		      {{addressform.billaddress}}{{ addressform.billaddress.errors }}
+		    </p>
+		    <p>Address 2<br />
+		      {{addressform.billaddress2}}{{ addressform.billaddress2.errors }}
+		    </p>
+		    <p>Address 3<br />
+		      {{addressform.billaddress3}}{{ addressform.billaddress3.errors }}
+		    </p>
+		    <p>Suburb<span class="title-ora">*</span><br />
+		      {{addressform.billsuburb}}{{ addressform.billsuburb.errors }}
+		    </p>
+		    <p>State/Province<span class="title-ora">*</span><br />
+		      {{addressform.billstate}}{{ addressform.billstate.errors }}
+		    </p>
+		    <p>Postcode/ZIP<span class="title-ora">*</span><br />
+		      {{addressform.billpostcode}}{{ addressform.billpostcode.errors }}
+		    </p>
+		    <p>Country<span class="title-ora">*</span><br />
+		      {{addressform.billcountry}}{{ addressform.billcountry.errors }}
+		    </p>
+		    <p>Phone<br />
+		      {{addressform.billphone}}{{ addressform.billphone.errors }}
+		    </p>
+		    <p>Email address<span class="title-ora">*</span><br />
+		      {{addressform.billemail}}{{ addressform.billemail.errors }}
+		    </p>
+		    <p class="subscribefield">Receive monthly newsletter<br />
+		      {{addressform.subscribe}}{{ addressform.subscribe.errors }}
+		    </p>
+		    <p>{{addressform.copydata}} My billing and shipping information are the same<br />
+		    </p>
+		</div>
+		<div class="spacer">
+		</div>
+		  <div id="left-about-sml">
+		    <p><span class="title-big-ora">Shipping Information</span></p>
+		    <p>First name<span class="title-ora">*</span><br />
+		      {{addressform.shipfirstname}}{{ addressform.shipfirstname.errors }}
+		    </p>
+		    <p>Last name<span class="title-ora">*</span><br />
+		      {{addressform.shiplastname}}{{ addressform.shiplastname.errors }}
+		    </p>
+		    <p>Company<br />
+		      {{addressform.shipcompany}}{{ addressform.shipcompany.errors }}
+		    </p>
+		    <p>Address<span class="title-ora">*</span><br />
+		      {{addressform.shipaddress}}{{ addressform.shipaddress.errors }}
+		    </p>
+		    <p>Address 2<br />
+		      {{addressform.shipaddress2}}{{ addressform.shipaddress2.errors }}
+		    </p>
+		    <p>Address 3<br />
+		      {{addressform.shipaddress3}}{{ addressform.shipaddress3.errors }}
+		    </p>
+		    <p>Suburb<span class="title-ora">*</span><br />
+		      {{addressform.shipsuburb}}{{ addressform.shipsuburb.errors }}
+		    </p>
+		    <p>State/Province<span class="title-ora">*</span><br />
+		      {{addressform.shipstate}}{{ addressform.shipstate.errors }}
+		    </p>
+		    <p>Postcode/ZIP<span class="title-ora">*</span><br />
+		      {{addressform.shippostcode}}{{ addressform.shippostcode.errors }}
+		    </p>
+		    <p>Country<span class="title-ora">*</span><br />
+		      {{addressform.shipcountry}}{{ addressform.shipcountry.errors }}
+		    </p>
+		    <p>Phone<br />
+		      {{addressform.shipphone}}{{ addressform.shipphone.errors }}
+		    </p>
+			
+			
+			
+		
+		  </div>
+	
+		<div class="text-block-top">
+		    <label>
+		    	<input name="update" type="submit" class="button-post" id="update" value="Update" />
+		    </label>
+		</div>
+{% if addressform.errors %}
+
+<script language="Javascript">
+<!--
+{% for error in addressform.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+//alert($('#id_{{error}}'));
+{% endfor %}
+// -->
+</script>
+{% endif %}
+		  </div>
+{% endblock %} 

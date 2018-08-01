@@ -1,0 +1,6 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_modify adminmedia %}
+
+
+
+{% block object-tools %}<ul class="tools"><li><a href="/admin/shop/order/order{{object_id}}/">View Full Order Information</a></li><li><a href='/admin/shop/order/invoice{{object_id}}/'>Show Invoice</a></li></ul>{% endblock %}

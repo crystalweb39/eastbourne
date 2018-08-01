@@ -1,0 +1,130 @@
+
+Hi {{order.user.first_name}}, <br/><br/>
+{% if order.status.status == 'Shipped'%}
+Thanks for shopping with us. We have shipped your order.<br/><br/>
+{%else%}
+Thanks for shopping with us today. We have received your order.<br/><br/>
+{%endif%}
+
+<b>Date:</b> {% now "j" %} {% now "F"%} {% now "Y" %}<br/>
+<b>Order Number:</b> {{order.getOrderNumber}}<br/>
+<b>Order Status:</b> {{order.status.status}}<br/>
+{%if payment%}
+<b>Payment Method:</b> Credit Card<br/>
+{%endif%}
+<b>Delivery Method:</b>  Australia Post Standard Delivery<br/><br/>
+
+------------------------------------------------------------------------------------------------------------<br/><br/>
+
+<b>First name:</b> {{order.user.first_name}}<br/>
+<b>Last name:</b> {{order.user.last_name}}<br/>
+<b>Phone:</b> {{shipping.phone}}<br/>
+<b>Email:</b> {{order.user.email}}<br/><br/>
+
+<table width="30%" border="0">
+    <tr>
+        <td><b>Shipping Details:</b>
+        </td>
+        <td><b>Billing Details:</b>
+        </td>
+    </tr>
+	
+	<tr>
+		<td>{{shipping.first_name}}/{{shipping.last_name}}</td>
+		<td>{{billing.first_name}}/{{billing.last_name}}</td>
+	</tr>
+	<tr>
+		<td>{{shipping.company}}</td>
+		<td>{{billing.company}}</td>
+		
+	</tr>
+    <tr>
+        <td>{{shipping.address}}  
+        </td>
+        <td>{{billing.address}}
+        </td>
+    </tr>
+	{%if shipping.address2%}
+    <tr>
+        <td>{{shipping.address2}}
+        </td>
+        <td>{{billing.address2}}
+        </td>
+    </tr>
+	{%endif%}
+	{%if shipping.address3%}
+    <tr>
+        <td>{{shipping.address3}}
+        </td>
+        <td>{{billing.address3}}
+        </td>
+    </tr>
+	{%endif%}
+    <tr>
+        <td>{{shipping.suburb}}	
+        </td>
+        <td>{{billing.suburb}}
+        </td>
+    </tr>
+    <tr>
+        <td>{{shipping.state}}
+        </td>
+        <td>{{billing.state}}
+        </td>
+    </tr>
+	<tr>
+		<td>{{shipping.postcode}}</td>
+		<td>{{billing.postcode}}</td>
+	</tr>
+    <tr>
+        <td>{{shipping.country}}
+        </td>
+        <td>{{billing.country}}
+        </td>
+    </tr>
+</table><br/><br/>
+
+------------------------------------------------------------------------------------------------------------<br/><br/>
+
+<b>Products Ordered</b><br/><br/>
+{% for product in order.productorder_set.all %}
+{{product.quantity}} X {{product.product.title}} ({{product.code}})  AU${{product.getUnitPrice}}<br/>
+{% endfor %}
+<br/><br/>
+------------------------------------------------------------------------------------------------------------<br/>
+						
+<table width="30%" border="0">
+    <tr>
+        <td width="60%">
+        </td>
+        <td>GST:         
+        </td>
+		<td>$AU{{order.tax_charged}}
+		</td>
+    </tr>
+    <tr>
+        <td width="60%">
+        </td>
+        <td>Postage:    
+        </td>
+		<td>$AU{{order.shipping_charged}}
+		</td>
+    </tr>
+    <tr>
+        <td width="60%">
+        </td>
+        <td>Order Total: 
+        </td>
+		<td>$AU{{order.total_charged}}
+		</td>
+    </tr>
+</table>
+						
+						
+			
+							<br/><br/>
+												 	
+<b>EastbourneArt Pty Ltd</b><br/>
+Call us: +61 2 9655 1800<br/>
+Fax: +61 2 9655 1800<br/>
+E-mail: orders@eastbourneart.com.au<br/><br/>

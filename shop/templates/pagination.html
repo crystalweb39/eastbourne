@@ -1,0 +1,9 @@
+{% if page.page.has_other_pages %}
+<div class="page-nav-right">
+	{% if page.page.has_previous %}<div class="arrow-L"><a href="{{ page.page.previous_page_number }}.html"><img src="/media/assets/images/arrow_sml_left.gif" alt="Previous" name="Previous" width="21" height="21" border="0" id="Previous" /></a></div>{% endif %}
+	{% for p in page.paginator.page_range %}
+	<a href="{{p}}.html"{% ifequal p page.pagenumber %} class="select"{%endifequal%}>{{p}}</a> 
+	{% endfor %}
+	{% if page.page.has_next %}<div class="arrow-R"><a href="{{ page.page.next_page_number }}.html"><img src="/media/assets/images/arrow_sml_right.gif" alt="Next" name="Next" width="21" height="21" border="0" id="Next" /></a></div>{% endif %}
+</div>
+{% endif %}

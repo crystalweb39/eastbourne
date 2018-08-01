@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block "title" %} &raquo; Wholesalers{% endblock %}
+{% block "content" %}
+			<div id="col-right">
+
+			<img src="/media/assets/images/hdr_trade_customers.jpg" alt="Image" />
+{% if form.errors %}
+<div id="errorsexist" class="errormsg">We encountered some errors in your login, please correct them below.</div>
+{% endif %}
+<form method="post">{% csrf_token %}
+		  <div id="left-about">
+		    <p><span class="title-big-ora">Trade customers login</span></p>
+			<p> To access the trade customer section of our website you will require a trade customer login. </p>
+			
+{{form.non_field_errors}}
+		    <p>Email address<span class="title-ora">*</span><br />
+		      {{form.email}}{{ form.email.errors }}
+		    </p>
+		    <p>Password<span class="title-ora">*</span><br />
+		      {{form.password}}{{ form.password.errors }}
+		    </p>
+			<p>
+              <input name="signin" type="submit" class="button-post" id="signin" value="Sign in to my account" />
+			</p>
+			<p>Forgot your password? <a href="forgotpassword.html">Click here</a></p>
+			<div class="line-dotted"></div>
+	        <p><span class="title-big-ora">Register for a trade account</span><br/></p>
+	      <p> If you are a trade customer and would like to obtain a login, please complete the registration process. Once we receive and accept your details, EastbourneArt will provide you with a username and password to access the site & allow you to place orders.<br /> <br />
+		   EastbourneArt will grant trade access based on an applicant’s information. Applicants are required to be a registered retailer, wholesaler, manufacturer in the Gift and Homewares industry. A registered business name and ABN is also required.</p>
+			<div class="line-dotted-button">
+                  <label>
+                  <input name="register" type="submit" class="button-post" id="register" value="Register for an account" />
+              </label>
+			</div>
+
+		    <p>&nbsp; </p>
+		  </div>
+{% if form.errors %}
+<script language="Javascript">
+<!--
+{% for error in form.errors %}
+$('#id_{{error}}').addClass('errorhighlight');
+//alert($('#id_{{error}}'));
+{% endfor %}
+// -->
+</script>
+{% endif %}
+</form>
+		  </div>
+{% endblock %}

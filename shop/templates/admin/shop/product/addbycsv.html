@@ -1,0 +1,44 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_modify adminmedia %}
+{% block breadcrumbs %}
+    <div id="breadcrumbs">
+      <a href="../../../">
+        {% trans "Home" %}
+      </a>
+       &rsaquo; 
+       <a href="../../">
+         Shop
+      </a>
+      &rsaquo; 
+      <a href="../"> product </a>
+	   &rsaquo; 
+	   <a href="."> Add by csv file</a>
+    </div>
+  {% endblock %}
+
+
+{% block content %}
+
+<h2> Please upload the files one by one in the following order </h2>
+<br/>
+<br/>
+Please upload the csv file for products:
+<form method="POST"  enctype="multipart/form-data">
+	<input type='file' name='productfile' />
+	<input type='submit' name='productupload' value='upload' />
+</form>
+{%for x in message%}
+{{x}}<br />
+{%endfor%}
+<br />
+<br />
+<br />
+Please upload the image file for products:
+<form method="POST"  enctype="multipart/form-data">
+	<input type='file' name='imagefile' />
+	<input type='submit' name='imageupload' value='upload' />
+</form>
+{%for x in sms%}
+{{x}}<br />
+{%endfor%}
+{%endblock%}

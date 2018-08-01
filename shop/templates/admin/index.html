@@ -1,0 +1,187 @@
+{% extends "admin/base_site.html" %}
+
+<!-- LOADING -->
+{% load i18n adminmedia grp_tags log %}
+
+<!-- JAVASCRIPTS -->
+{% block javascripts %}
+
+
+    {{ block.super }}
+
+
+<script src='/media/adminmedia/dash/js/admin_script.js' type='text/javascript'></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type='text/javascript'>
+var datalist
+
+  	  google.load("visualization", "1", {packages:["corechart"]});
+	  
+
+	 
+	  </script>
+{% endblock %}
+
+{% block extrastyle %}
+<link href='/media/adminmedia/dash/css/admin_css.css' type='text/css' rel='stylesheet'>
+
+{% endblock %}
+
+<!-- COLTYPE/BODYCLASS-- >
+{% block bodyclass %}dashboard{% endblock %}
+{% block content-class %}content-grid{% endblock %}
+
+<!-- BREADCRUMBS -->
+{% block breadcrumbs %}<div id="breadcrumbs">{% trans "Home" %}</div>{% endblock %}
+{% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+<div class="container-grid">
+<!--  customize content  -->
+	<div class='column span-3' style='width:86px;'>
+		<div class='oneapp'><a href='/admin/auth/'><img src='/media/assets/images/auth.jpg'></a></div>
+		<div class='oneapp'><a href='/admin/userprofile/'><img src='/media/assets/images/users.jpg'></a> </div>
+		<div class='oneapp'><a href='/admin/shop/'><img src='/media/assets/images/shop.jpg'></a></div>
+		<div class='oneapp'><a href='/admin/blog/'><img src='/media/assets/images/blog.jpg'></a></div>
+		<div class='oneapp'><a href='/admin/website/'><img src='/media/assets/images/website.jpg'></a></div>
+		<div class='oneapp'><a href='/admin/emails/'><img src='/media/assets/images/CRM.jpg'></a></div>
+		
+	</div>
+	
+	
+    <div class="column span-12">
+        {% if app_list %}
+            
+                <div class="module" id="app_links">
+                    <h2><a href="{{ app.app_url }}" class="section">Quick Links</a></h2>
+                   {% for app in app_list %} 
+                    {% for model in app.models %}
+                    	{% if model.name == 'Users' or model.name == 'Blog Posts' or model.name == 'Orders' or model.name == 'Products' or model.name == 'Billing Details' or model.name == 'Emails' or model.name == 'Subscriptions' or model.name == 'Stockists' %}
+                        <div class="row">
+                            {% if model.perms.change %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}<span>{{ model.name }}</span>{% endif %}
+                            <ul class="actions">
+                                <li class="add-link">{% if model.perms.add %}<a href="{{ model.admin_url }}add/">{% trans 'Add' %}</a>{% else %}&nbsp;{% endif %}</li>
+                                <li class="change-link"> {% if model.perms.change %}<a href="{{ model.admin_url }}">{% trans 'Change' %}</a>{% else %}&nbsp;{% endif %}</li>
+                            </ul>
+                       </div>
+                       {% endif %}
+                   {% endfor %}
+                   {% endfor %}
+               </div>
+           
+        {% else %}
+            <p>{% trans "You don´t have permission to edit anything." %}</p>
+        {% endif %}
+        <div class='column span-6 bottom-space'>
+	        <div class="module white" id="app_links">
+	                    <h2><a href="#" class="section">Retail Lifetime Sales</a></h2>
+	                     <div class="row">
+	                    	<div id='retail_total' class='the_price'></div>
+	                     </div>
+	        </div>
+	        </div>
+        <div class='column span-6 bottom-space noright'>
+			<div class="module white" id="app_links">
+                    <h2><a href="#" class="section">Retail Average Orders</a></h2>
+                     <div class="row">
+                     	<div id='retail_average' class='the_price'></div>
+                     </div>
+            </div>
+        </div>
+        
+        <div class='column span-6 bottom-space' >
+	        <div class="module white" id="app_links">
+	                    <h2><a href="#" class="section">Wholesale Lifetime Sales</a></h2>
+	                     <div class="row">
+	                    	<div id='wholesale_total' class='the_price'></div>
+	                     </div>
+	        </div>
+	        </div>
+
+        <div class='column span-6 bottom-space noright'>
+			<div class="module white" id="app_links">
+                    <h2><a href="#" class="section">Wholesale Average Orders</a></h2>
+                     <div class="row">
+                     		<div id='wholesale_average' class='the_price'></div>
+                     </div>
+            </div>
+        </div>
+   	  <div class="column span-12 bottom-space">
+        
+            
+                <div class="module white" id="app_links" >
+                    <h2><a href="" class="section">Sales Timeline</a></h2> 
+                    <select id='vertical-select'>
+                    	<option value='sale'>Sales</option>
+                    	<option value='amount'>Amount</option>
+                    </select>
+                    <select id='timeline-select'>
+                    	<option value='day'>Last 24 hours </option>
+                    	<option value='week'>Last 7 days</option>
+                    	<option value='month' selected>Last 30 days</option>
+                    	<option value='year'>YTD</option>
+                    </select>
+                    <span id='chart_div'>
+                   
+                    </span>
+				</div>
+		</div>   
+   	  <div class="column span-12 bottom-space">
+        
+            
+                <div class="module" id="app_links">
+                    <h2><a href="" class="section">Best Sellers</a></h2> 
+                    <span id='top-seller'>
+                    
+                    </span>
+				</div>
+		</div>
+
+    </div>
+    <div class="column span-6 last">
+    <div class="module actions" id="recent-actions-module">
+            <h2>Site Analytics</h2>
+            <div class="module">
+                <h3>Last 30 Days</h3>
+                	<div class="row">
+                     		<div class='the_analytic'><span id='ga_visits'></span><a href='#'> Visits</a></div> 
+                    </div>
+                   	<div class="row">
+                     		<div class='the_analytic'><span id='ga_pageviews' ></span><a href='#'> Pageviews</a></div> 
+                    </div>
+                    <div class="row">
+                     		<div class='the_analytic'><span id='ga_pageviewsPerVisit' ></span><a href='#'> Pages/Visit</a></div> 
+                    </div>
+                    <div class="row">
+                     		<div  class='the_analytic'><span id='ga_visitBounceRate' ></span><a href='#'>  Bounce Rate</a></div>
+                    </div>
+                    <div class="row">
+                     		<div class='the_analytic'><span  id='ga_avgTimeOnSite' ></span><a href='#'> Avg. Time on Site</a></div> 
+                    </div>
+                    <div class="row">
+                     		<div  class='the_analytic'><span id='ga_percentNewVisits'></span><a href='#'> % New Visits</a></div> 
+                    </div>
+                   
+
+            </div>
+        </div>
+        <div class="module actions" id="recent-actions-module">
+            <h2>{% trans 'Recent Actions' %}</h2>
+            <div class="module">
+                <h3>{% trans 'My Actions' %}</h3>
+                {% get_admin_log 10 as admin_log for_user user %}
+                {% if not admin_log %}
+                    <p>{% trans 'None available' %}</p>
+                {% else %}
+                    <ul>
+                        {% for entry in admin_log %}
+                            <li class="{% if entry.is_addition %}add-link{% endif %}{% if entry.is_change %}change-link{% endif %}{% if entry.is_deletion %}delete-link{% endif %}">{% if not entry.is_deletion %}<a href="{{ entry.get_admin_url }}">{% endif %}{{ entry.object_repr }}{% if not entry.is_deletion %}</a>{% endif %}<br /><span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

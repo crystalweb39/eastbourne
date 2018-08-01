@@ -1,0 +1,392 @@
+
+<div >
+<h1><img src="/media/assets/images/logo_eastbourne.jpg" width='390' height='93'></h1>
+<h1>Tax Invoice</h1>
+<div>
+<table width="750" border="0" cellpadding="3" cellspacing="0" style='font-family:Arial, Helvetica, sans-serif;font-size:12px'>
+  <thead>
+  </thead>
+  <tbody>
+    <tr>
+      <th width="135" align="left">Date:</th>
+      <td width="211">{% now "j" %}.{% now "n" %}.{% now "y" %} </td>
+      <td width="5">&nbsp;</td>
+      <td><b>First Name:</b></td>
+      <td>{{order.user.first_name}}</td>
+    </tr>
+    <tr>
+      <td><b>Order #:</b></td>
+      <td>{{order.getOrderNumber}}</td>
+      <td>&nbsp;</td>
+      <th width="138" align="left">Last Name:</th>
+      <td width="231">{{order.user.last_name}}</td>
+      </tr>
+    <tr>
+      <td><b>Order Status:</b></td>
+      <td>{{order.status}}</td>
+      <td>&nbsp;</td>
+      <th align="left">Phone:</th>
+      <td>-</td>
+      </tr>
+    <tr>
+      <td><b>Payment Method:</b></td>
+      <td>{% if order.user.is_active %} N/A {% else %}Credit Card {% endif %}</td>
+      <td>&nbsp;</td>
+      <td width="138"><b>Email:</b></td>
+      <td><a href="mailto:{{order.user.email}}" target="_blank">{{order.user.email}}</a></td>
+      </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<table width="750" border="0" cellpadding="3" cellspacing="0" style='font-family:Arial, Helvetica, sans-serif;font-size:12px'>
+  <thead>
+    </thead>
+  <tbody>
+    <tr>
+      <th colspan="2" align="left" bgcolor="#eee6da">Shipping Information</th>
+      <th align="left">&nbsp;</th>
+      <th colspan="2" align="left" bgcolor="#eee6da">Billing Information</th>
+      </tr>
+    <tr>
+      <th width="134" align="left" bgcolor="#fcf9f4">To:</th>
+      <td width="226" bgcolor="#fcf9f4">{{order.getProfileShipping.first_name}} {{order.getProfileShipping.last_name}}  </td>
+      <td width="6">&nbsp;</td>
+      <th width="213" align="left" bgcolor="#fcf9f4">To:</th>
+      <td width="183" bgcolor="#fcf9f4">{{order.getProfileBilling.first_name}} {{order.getProfileBilling.last_name}}</td>
+      </tr>
+    <tr>
+      <td bgcolor="#fcf9f4"><b>Address:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileShipping.address}} {% if order.getProfileShipping.address2 %}<br>{{order.getProfileShipping.address2}}{% endif %}{% if order.getProfileShipping.address3 %}<br>{{order.getProfileShipping.address3}}{% endif %}</td>
+      <td>&nbsp;</td>
+      <td bgcolor="#fcf9f4"><b>Address:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileBilling.address}} {% if order.getProfileBilling.address2 %}<br>{{order.getProfileBilling.address2}}{% endif %}{% if order.getProfileBilling.address3 %}<br>{{order.getProfileBilling.address3}}{% endif %}</td>
+      </tr>
+    <tr>
+      <td bgcolor="#fcf9f4"><b>Suburb:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileShipping.suburb}}</td>
+      <td>&nbsp;</td>
+      <td bgcolor="#fcf9f4"><b>Suburb:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileBilling.suburb}}</td>
+      </tr>
+    <tr>
+      <td bgcolor="#fcf9f4"><b>State:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileShipping.state}}</td>
+      <td>&nbsp;</td>
+      <td bgcolor="#fcf9f4"><b>State:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileBilling.state}}</td>
+      </tr>
+    <tr>
+      <td bgcolor="#fcf9f4"><b>Postcode:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileShipping.postcode}}</td>
+      <td>&nbsp;</td>
+      <td bgcolor="#fcf9f4"><b>Postcode:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileBilling.postcode}}</td>
+      </tr>
+    <tr>
+      <td bgcolor="#fcf9f4"><b>Country:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileShipping.country}}</td>
+      <td>&nbsp;</td>
+      <td bgcolor="#fcf9f4"><b>Country:</b></td>
+      <td bgcolor="#fcf9f4">{{order.getProfileBilling.country}}</td>
+      </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<h3>Order Details</h3>
+<table width="750" border="0" cellpadding="5" cellspacing="0" style='font-family:Arial, Helvetica, sans-serif;font-size:12px'>
+  <thead>
+  <tr>
+    <th width="212" align="left" bgcolor="#c6aa7f">Code</th>
+    <th width="232" align="left" bgcolor="#c6aa7f">Product</th>
+    <th width="65" bgcolor="#c6aa7f">Quantity</th>
+    <th width="52" bgcolor="#c6aa7f">Size</th>
+    <th width="53" bgcolor="#c6aa7f">Style</th>
+	<th width='60' bgcolor='#c6aa7f'>Coupon</th>
+    <th width="70" bgcolor="#c6aa7f">Price</th></tr></thead>
+  <tbody>
+  {% for po in order.productorder_set.all %}
+  <tr>
+    <td>{{po.product.code}}</td>
+    <td>{{po.product.title}}</td>
+    <td align="center">{{po.quantity}}</td>
+    <td align="center">{% firstof po.size '-' %}</td>
+    <td align="center">{% firstof po.style '-' %}</td>
+	<td align="center">{% firstof po.coupon '-' %}</td>
+    <td align="center">${{po.getTotalPrice}}</td></tr>
+ {% endfor %}
+  <tr>
+  	<td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <th colspan="6" align="right">GST Total</th>
+    <td align="center">${{order.getTaxCharged}}</td>
+  </tr>
+  <tr>
+    <th colspan="6" align="right">Shipping Total</th>
+    <td align="center">${{order.getShippingCharged}}</td>
+  </tr>
+  <tr>
+    <th colspan="6" align="right">Order Total</th>
+    <td align="center">${{order.total_charged}}</td>
+  </tr>
+  <tr>
+    <th colspan="7" align="right">&nbsp;</th>
+  </tr>
+  {% if order.user.is_active %}
+  <tr>
+    <th colspan="7" align="left">Terms &amp; Conditions</th>
+  </tr>
+  <tr>
+    <td colspan="7" align="left">All goods remain the property of LYMCOR PTY LTD T/A EASTBOURNE ART until paid in full.Orders are treated as confirmed. Back orders can not be cancelled. No claims recognised 7 days after delivery date. Please read our Trade Customer Terms &amp; Conditions - <a href="http://www.eastbourneart.com.au/terms.html" target="_blank">www.eastbourneart.com.au/<wbr>terms.html</a></td>
+  </tr>
+  </table>
+   <br />
+  <table width="750" border="0" cellpadding="3" cellspacing="0" style='font-family:Arial, Helvetica, sans-serif;font-size:12px'>
+  <thead>
+  </thead>
+  <tbody>
+    <tr align="left">
+      <th>Payment by Credit Card</th>
+      <th>&nbsp;</th>
+      <th>Payment by Cheque</th>
+      </tr>
+    <tr>
+      <td width="366">Payment via Mastercard or VISA is subject to a 1.5% fee.<br>
+Call +61 2 9655 1800 &amp; quote your order number</td>
+      <td width="5">&nbsp;</td>
+      <td rowspan="4" align="left" valign="top">Please send a copy of your emailed invoice with cheque to:
+      <br>Eastbourne Art
+      <br>
+      12 Charltons Creek Road
+      <br>
+      Berrilee NSW 2159</td>
+      </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <th align="left">Payment by Direct Deposit</th>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <td width="366" align="left">BSB: 633 000<br>
+        Account No: 1231 90050<br>
+        LYMCOR PTY LTD</td>
+      <td>&nbsp;</td>
+      </tr>
+  </tbody>
+</table>
+  {% else %}
+  <tr>
+    <th colspan="6" align="left">Terms &amp; Conditions</th>
+  </tr>
+  <tr>
+    <td colspan="6" align="left">All goods remain the property of LYMCOR PTY LTD T/A EASTBOURNE ART until paid in full.Orders are treated as confirmed. No returns recognised 7 days after delivery date. Please read our  Customer Terms &amp; Conditions - <a href="http://www.eastbourneart.com.au/terms.html" target="_blank">www.eastbourneart.com.au/<wbr>terms.html</a></td>
+  </tr>
+  {% endif %}
+  </tbody>
+</table>
+<br>
+<table width="750" border="0" cellpadding="3" cellspacing="0" style='font-family:Arial, Helvetica, sans-serif;font-size:12px'>
+  <thead>
+  </thead>
+  <tbody>
+    <tr align="left">
+      <th>Eastbourne Art</th>
+      <th>&nbsp;</th>
+      </tr>
+    <tr>
+      <td width="219">12-14 Charltons Creek Road</td>
+      <td width="519">&nbsp;</td>
+      </tr>
+    <tr>
+      <td>Berrilee NSW 2159</td>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <td>T: 02 9655 1800</td>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <td>F: 02 9655 1800</td>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <td>E: <a href="mailto:orders@eastbourneart.com.au" target="_blank">orders@eastbourneart.com.au</a></td>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <td>ABN: 69 003 228 260</td>
+      <td>&nbsp;</td>
+      </tr>
+  </tbody>
+</table></div></div>
+</body>
+
+{% comment %}
+<h1> <img src='/media/assets/images/logo.jpg'></h1>
+
+<h1>Tax Invoice</h1>
+
+
+{% block content %}<div id="content-main">
+
+<table border="1">
+<thead>
+<tr>
+	<th>Code</th>
+	<th>Product</th>
+	<th>Quantity</th>
+	<th>Price</th>
+	<th>Size</th>
+	<th>Style</th>
+</tr>
+</thead>
+{% for po in order.productorder_set.all %}
+<tr class="{% cycle 'row1' 'row2' %}">
+	<td>{{po.code}}</td>
+	<td>{{po.product.title}}</td>
+	<td>{{po.quantity}}</td>
+	<td>{{po.price}}</td>
+	<td>{{po.size}}</td>
+	<td>{{po.style}}</td>
+</tr>
+{% endfor %}
+</table>
+
+<p> &nbsp;</p>
+
+<table border="1">
+	<th> First Name/Last Name </th>
+	<th> GST Total </th>
+	<th> Shipping Total </th>
+	<th> Order Total </th>
+<tr class="{% cycle 'row1' 'row2' %}">
+	<td> {{order.user.first_name}}/{{order.user.last_name}} </td>
+	<td> {{order.tax_charged}} </td>
+	<td> {{order.shipping_charged}} </td>
+	<td> {{order.total_charged}} </td>
+</table>	
+
+{% if not profile %}
+	<p style="padding-left:30px">A user profile is not associated with this order.</p>
+{% else %}
+<h2>User Profile Information</h2>
+<table>
+	<tr><td colspan="2"></td></tr>
+	<tr>
+		<td><b>Email</b></td>
+		<td>{{order.user.email}}</td>
+	</tr>
+		<td><b>Phone</b></td>
+		<td>{{order.getProfile.phone}}</td>
+	</tr>
+	<tr>
+		<td><b>Phone 2</b></td>
+		<td>{{order.getProfile.phone2}}</td>
+	</tr>
+	<tr>
+		<td><b>Fax</b></td>
+		<td>{{order.getProfile.fax}}</td>
+	</tr>
+	<tr>
+		<td><b>Company</b></td>
+		<td>{{order.getProfile.company}}</td>
+	</tr>
+	<tr>
+		<td><b>Trading As</b></td>
+		<td>{{order.getProfile.tradingas}}</td>
+	</tr>
+	<tr>
+		<td><b>ABN</b></td>
+		<td>{{order.getProfile.abn}}</td>
+	</tr>
+	<tr>
+		<td><b>Subscriber</b></td>
+		<td>{{order.getProfile.subscribe|yesno:"Yes,No"}}</td>
+	</tr>
+</table>
+<h2>Shipping Information</h2>
+<table>
+	<tr><td colspan="2"></td></tr>
+	<tr>
+		<td><b>Address</b></td>
+		<td>{{order.getProfileShipping.address}}</td>
+	</tr>
+	<tr>
+		<td><b>Address2</b></td>
+		<td>{{order.getProfileShipping.address2}}</td>
+	</tr>
+	<tr>
+		<td><b>Address3</b></td>
+		<td>{{order.getProfileShipping.address3}}</td>
+	</tr>
+	<tr>
+		<td><b>Suburb</b></td>
+		<td>{{order.getProfileShipping.suburb}}</td>
+	</tr>
+	<tr>
+		<td><b>State</b></td>
+		<td>{{order.getProfileShipping.state}}</td>
+	</tr>
+	<tr>
+		<td><b>Postcode</b></td>
+		<td>{{order.getProfileShipping.postcode}}</td>
+	</tr>
+	<tr>
+		<td><b>Country</b></td>
+		<td>{{order.getProfileShipping.country}}</td>
+	</tr>
+	<tr>
+		<td><b>Phone</b></td>
+		<td>{{order.getProfileShipping.phone}}</td>
+	</tr>
+</table>
+{% if order.getProfileBilling %}
+<h2>Billing Information</h2>
+<table>
+	<tr><td colspan="2"></td></tr>
+	<tr>
+		<td><b>Address</b></td>
+		<td>{{order.getProfileBilling.address}}</td>
+	</tr>
+	<tr>
+		<td><b>Address2</b></td>
+		<td>{{order.getProfileBilling.address2}}</td>
+	</tr>
+	<tr>
+		<td><b>Address3</b></td>
+		<td>{{order.getProfileBilling.address3}}</td>
+	</tr>
+	<tr>
+		<td><b>Suburb</b></td>
+		<td>{{order.getProfileBilling.suburb}}</td>
+	</tr>
+	<tr>
+		<td><b>State</b></td>
+		<td>{{order.getProfileBilling.state}}</td>
+	</tr>
+	<tr>
+		<td><b>Postcode</b></td>
+		<td>{{order.getProfileBilling.postcode}}</td>
+	</tr>
+	<tr>
+		<td><b>Country</b></td>
+		<td>{{order.getProfileBilling.country}}</td>
+	</tr>
+	<tr>
+		<td><b>Phone</b></td>
+		<td>{{order.getProfileBilling.phone}}</td>
+	</tr>
+</table>
+{% endif %}
+{% endif %}
+{% endblock %}
+{% endcomment %}

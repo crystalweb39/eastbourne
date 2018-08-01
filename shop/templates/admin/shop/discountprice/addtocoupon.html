@@ -1,0 +1,99 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_modify adminmedia %}
+
+
+
+{% block breadcrumbs %}
+    {% if not is_popup %}
+        <div id="breadcrumbs">
+            <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+            <a href="../../">shop</a> &rsaquo;
+            <a href="../">discount price</a> &rsaquo;
+			<a>add to coupon</a> &rsaquo;
+        </div>
+		<ul class="messagelist"><li>{{message}}</li></ul>
+    {% endif %}
+{% endblock %}
+
+
+ {% block content %}
+ 
+ <h1> Please select coupon you want to add </h1>
+  <form action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>
+      <div id="changelist" class="container-full" style="">
+    <div class="module changelist-results">
+        <table cellspacing="0">
+            <thead>
+                <tr>
+                		<th class=" action-checkbox-column">
+                            
+                            
+                            
+                        </th>
+                    {% for header in result_headers %}
+				
+                        <th class="{{ header.class_attrib|cut:'class='|cut:'"' }}{% if header.sortable %} sortable{% endif %}">
+                            {% if header.sortable %}<a href="{{ header.url }}">{% endif %}
+                            {{ header }}
+                            {% if header.sortable %}</a>{% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr class="{% cycle 'row1' 'row2' %}">
+                    	<td><input type="checkbox" value="{{result.id}}" name="{{list_name}}"></td> 
+                    	<td ><a href='/admin/shop/coupon/{{result.id}}/'> {{result.name}} </a></td>
+						<td> {{result.number}} </td>						
+						<td> {{result.codes}} </td>	
+						<td> {{result.used}} </td>	
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<h1> Selected discount price will be added to this coupon </h1>
+<div id="changelist" class="container-full" style="">
+    <div class="module changelist-results">
+        <table cellspacing="0">
+            <thead>
+                <tr>
+                	
+                    {% for header in select_headers %}
+				
+                        <th class="{{ header.class_attrib|cut:'class='|cut:'"' }}{% if header.sortable %} sortable{% endif %}">
+                            {% if header.sortable %}<a href="{{ header.url }}">{% endif %}
+                            {{ header }}
+                            {% if header.sortable %}</a>{% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in selected %}
+                    <tr class="{% cycle 'row1' 'row2' %}">
+     
+                    	<td > {{result.product}} </td>
+						<td> {{result.start}} </td>
+						<td> {{result.end}} </td>		
+						<td> {{result.priceoff}} </td>
+						<td> {{result.wholesale_priceoff}} </td>
+						<td> {{result.getCategory}} </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+	</div>
+	
+	{{rp}}
+			   <div id="submit" class="module footer" >
+                <ul class="submit-row">
+                    <li class="left delete-link-container">Cancel</li>
+                    <li class="submit-button-container"><input type="submit" class="default" name="_save" value="Add to coupon"/></li>
+                </ul>
+            </div>
+			</form>
+ {% endblock %}

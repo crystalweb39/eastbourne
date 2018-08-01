@@ -1,0 +1,95 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_modify adminmedia %}
+
+
+
+{% block breadcrumbs %}
+    {% if not is_popup %}
+        <div id="breadcrumbs">
+            <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+            <a href="../../">website</a> &rsaquo;
+            <a href="../">subscription</a> &rsaquo;
+			<a href="./">sendmail</a> &rsaquo;
+        </div>
+		<ul class="messagelist"><li>{{message}}</li></ul>
+    {% endif %}
+{% endblock %}
+
+
+ {% block content %}
+ 
+ <h1> Please select emails you want to send </h1>
+  <form action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>
+      <div id="changelist" class="container-full" style="">
+    <div class="module changelist-results">
+        <table cellspacing="0">
+            <thead>
+                <tr>
+                		<th class=" action-checkbox-column">
+                            
+                            
+                            
+                        </th>
+                    {% for header in result_headers %}
+				
+                        <th class="{{ header.class_attrib|cut:'class='|cut:'"' }}{% if header.sortable %} sortable{% endif %}">
+                            {% if header.sortable %}<a href="{{ header.url }}">{% endif %}
+                            {{ header }}
+                            {% if header.sortable %}</a>{% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr class="{% cycle 'row1' 'row2' %}">
+                    	<td><input type="checkbox" value="{{result.id}}" name="emails"></td> 
+                    	<td > {{result.title}} </td>
+						<td> {{result.send}} </td>						
+						
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<h1> Selected emails will be sent to </h1>
+<div id="changelist" class="container-full" style="">
+    <div class="module changelist-results">
+        <table cellspacing="0">
+            <thead>
+                <tr>
+                	
+                    {% for header in select_headers %}
+				
+                        <th class="{{ header.class_attrib|cut:'class='|cut:'"' }}{% if header.sortable %} sortable{% endif %}">
+                            {% if header.sortable %}<a href="{{ header.url }}">{% endif %}
+                            {{ header }}
+                            {% if header.sortable %}</a>{% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in selected %}
+                    <tr class="{% cycle 'row1' 'row2' %}">
+     
+                    	<td > {{result.email}} </td>
+						<td> {{result.is_wholesale}} </td>						
+						
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+	</div>
+	
+	{{rp}}
+			   <div id="submit" class="module footer" >
+                <ul class="submit-row">
+                    <li class="left delete-link-container">Cancel</li>
+                    <li class="submit-button-container"><input type="submit" class="default" name="_save" value="Send Emails"/></li>
+                </ul>
+            </div>
+			</form>
+ {% endblock %}
